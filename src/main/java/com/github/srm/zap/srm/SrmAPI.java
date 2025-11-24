@@ -60,7 +60,7 @@ public class SrmAPI extends ApiImplementor {
         initApiViewsAndActions();
     }
 
-    private static void initApiViewsAndActions() {
+    private void initApiViewsAndActions() {
         this.addApiView(new ApiView(VIEW_GENERATE));
 
         String[] optionalParams = new String[] {ACTION_PARAM_FINGERPRINT, ACTION_PARAM_ACCEPT_PERM};
