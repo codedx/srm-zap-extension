@@ -57,6 +57,10 @@ public class SrmAPI extends ApiImplementor {
 
     public SrmAPI(SrmExtension extension) {
         this.extension = extension;
+        initApiViewsAndActions();
+    }
+
+    private static void initApiViewsAndActions() {
         this.addApiView(new ApiView(VIEW_GENERATE));
 
         String[] optionalParams = new String[] {ACTION_PARAM_FINGERPRINT, ACTION_PARAM_ACCEPT_PERM};
