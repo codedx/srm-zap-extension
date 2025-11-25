@@ -1,17 +1,24 @@
-# ZAP Template Java Add-on
+[![License](https://img.shields.io/badge/license-Apache%202-4EB1BA.svg)](https://www.apache.org/licenses/LICENSE-2.0.html)
+[![CodeQL](https://github.com/zaproxy/zap-extensions/actions/workflows/codeql.yml/badge.svg)](https://github.com/zaproxy/zap-extensions/actions/workflows/codeql.yml)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=zaproxy_zap-extensions&metric=alert_status)](https://sonarcloud.io/dashboard?id=zaproxy_zap-extensions)
 
-A template repo for a 3rd party [ZAP](https://www.zaproxy.org) Java add-on.
+This project contains add-ons for the [Zed Attack Proxy](https://github.com/zaproxy/zaproxy) (ZAP).
 
-If you'd like to create your own ZAP add-on which could be published to the [ZAP Marketplace](https://www.zaproxy.org/addons/) then copy this repo and make the following changes:
+If you are using the latest version of ZAP, you can browse and download "Software Risk Manager Extension" directly from within ZAP by clicking the Marketplace button in the toolbar.
+This specific add-on is Software Risk Manager (SRM), and you can find it in the Marketplace under the name “Software Risk Manager Extension”.
 
-1. Rename the `youruser` directories to be your github name (or choose another package hierarchy which works better for you).
+![Image](https://github.com/zaproxy/zap-extensions/wiki/images/zap-screenshot-browse-addons.png)
 
-1. Change the add-on ID `addonjava` to be a new ID which is not already on the [ZAP Marketplace](https://www.zaproxy.org/addons/).
+You can also import add-ons you have downloaded manually from https://github.com/zaproxy/zap-extensions/releases via the "File / Load Add-on File..." menu option.
 
-1. Change the code and help files to do whatever you want :smiley:
+Please see the [wiki](https://github.com/zaproxy/zap-extensions/wiki) for more details.
 
-1. Deploy and test your app locally, e.g. using `./gradlew copyZapAddon`
+## Building
 
-1. Optional: Raise an [Issue](https://github.com/zaproxy/zaproxy/issues/new?assignees=&labels=marketplace&template=third-party-addon.yml) to get your add-on published on the [ZAP Marketplace](https://www.zaproxy.org/addons/).
+The add-ons are built with [Gradle], each add-on has its own project which is located under the `addOns` project/directory.
 
-For more info on developing ZAP add-ons see https://www.zaproxy.org/docs/developer/
+To build zap-extensions follow the instructions on:
+
+https://www.zaproxy.org/docs/developer/quick-start-build/
+
+[Gradle]: https://gradle.org/

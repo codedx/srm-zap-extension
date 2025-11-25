@@ -17,16 +17,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.srm.zap.srm;
+package com.blackduck.zap.srm.security;
 
-import org.parosproxy.paros.model.SiteNode;
+import java.security.cert.Certificate;
+import java.security.cert.CertificateException;
 
-public class ReportLastScanHttp extends ReportLastScan {
-
-    ReportLastScanHttp() {}
-
-    @Override
-    public StringBuilder getExtensionsXML(SiteNode site) {
-        return new StringBuilder(new ExtensionAlertHttp().getXml(site));
-    }
+public interface InvalidCertificateStrategy {
+	/**
+	 * Determine what to do with a certificate (reject, accept temporarily, or accept permanently)
+	 *
+	 * @param cert      A (probably invalid) certificate
+	 * @param certError An exception (or null) that caused the certificate to be considered invalid
+	 * @return A CertificateAcceptance value that determines whether (and for how long) the
+	 * certificate should be considered valid.
+	 */
+	CertificateAcceptance checkAcceptance(Certificate cert, CertificateException certError);
 }

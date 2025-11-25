@@ -17,11 +17,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.srm.zap.srm.security;
+package com.blackduck.zap.srm.security;
 
-import java.util.Set;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLSession;
+import java.util.Set;
 
 /**
  * HostnameVerifier implementation that delegates to another one, but will allow a particular set of
@@ -29,17 +29,17 @@ import javax.net.ssl.SSLSession;
  */
 public class HostnameVerifierWithExceptions implements HostnameVerifier {
 
-    private final HostnameVerifier delegate;
-    private final Set<String> allowedExceptions;
+	private final HostnameVerifier delegate;
+	private final Set<String> allowedExceptions;
 
-    public HostnameVerifierWithExceptions(
-            HostnameVerifier delegate, Set<String> allowedExceptions) {
-        this.delegate = delegate;
-        this.allowedExceptions = allowedExceptions;
-    }
+	public HostnameVerifierWithExceptions(
+			HostnameVerifier delegate, Set<String> allowedExceptions) {
+		this.delegate = delegate;
+		this.allowedExceptions = allowedExceptions;
+	}
 
-    @Override
-    public boolean verify(String host, SSLSession session) {
-        return delegate.verify(host, session) || allowedExceptions.contains(host);
-    }
+	@Override
+	public boolean verify(String host, SSLSession session) {
+		return delegate.verify(host, session) || allowedExceptions.contains(host);
+	}
 }

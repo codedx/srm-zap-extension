@@ -17,7 +17,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.srm.zap.srm.security;
+package com.blackduck.zap.srm.security;
 
 /**
  * Enumeration to describe the possible outcomes of an {@link InvalidCertificateStrategy} when
@@ -25,20 +25,22 @@ package com.github.srm.zap.srm.security;
  */
 public enum CertificateAcceptance {
 
-    /** The invalid certificate should be rejected. */
-    REJECT,
+	/**
+	 * The invalid certificate should be rejected.
+	 */
+	REJECT,
 
-    /**
-     * The invalid certificate should be accepted on a short-term basis, e.g. for the duration of
-     * the session, or until the current JVM stops. The actual interpretation is up to the
-     * corresponding {@link ExtraCertManager}.
-     */
-    ACCEPT_TEMPORARILY,
+	/**
+	 * The invalid certificate should be accepted on a short-term basis, e.g. for the duration of
+	 * the session, or until the current JVM stops. The actual interpretation is up to the
+	 * corresponding {@link ExtraCertManager}.
+	 */
+	ACCEPT_TEMPORARILY,
 
-    /**
-     * The invalid certificate should be accepted on a long-term basis, e.g. by adding the
-     * certificate to a custom KeyStore and persisting it to disk. The actual interpretation is up
-     * to the corresponding {@link ExtraCertManager}.
-     */
-    ACCEPT_PERMANENTLY;
+	/**
+	 * The invalid certificate should be accepted on a long-term basis, e.g. by adding the
+	 * certificate to a custom KeyStore and persisting it to disk. The actual interpretation is up
+	 * to the corresponding {@link ExtraCertManager}.
+	 */
+	ACCEPT_PERMANENTLY
 }
