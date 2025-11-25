@@ -97,11 +97,10 @@ public class SrmExtension extends ExtensionAdaptor {
 		if (menuExport == null) {
 			menuExport = new ZapMenuItem("srm.topmenu.report.title");
 
-			menuExport.addActionListener(
-					e -> {
-						ReportLastScanHttp saver = new ReportLastScanHttp();
-						saver.generateReport(getView(), ReportType.XML);
-					});
+			menuExport.addActionListener(e -> {
+				ReportLastScanHttp saver = new ReportLastScanHttp();
+				saver.generateReport(getView(), ReportType.XML);
+			});
 		}
 		return menuExport;
 	}
@@ -110,38 +109,26 @@ public class SrmExtension extends ExtensionAdaptor {
 		try {
 			return getHttpClient(SrmProperties.getInstance().getServerUrl());
 		} catch (MalformedURLException e) {
-			View.getSingleton()
-					.showWarningDialog(Constant.messages.getString("srm.error.client.invalid"));
+			View.getSingleton().showWarningDialog(Constant.messages.getString("srm.error.client.invalid"));
 		} catch (IOException | GeneralSecurityException e) {
-			View.getSingleton()
-					.showWarningDialog(Constant.messages.getString("srm.error.client.failed"));
+			View.getSingleton().showWarningDialog(Constant.messages.getString("srm.error.client.failed"));
 		}
 		return null;
 	}
 
-	public CloseableHttpClient getHttpClient(String url)
-			throws IOException, GeneralSecurityException {
+	public CloseableHttpClient getHttpClient(String url) throws IOException, GeneralSecurityException {
 		return getHttpClient(url, null, false);
 	}
 
 	@SuppressWarnings("deprecation")
-	public CloseableHttpClient getHttpClient(
-			String url, String fingerprint, boolean acceptPermanently)
-			throws IOException, GeneralSecurityException {
-		RequestConfig.Builder configBuilder =
-				RequestConfig.custom()
-						.setConnectTimeout(getTimeout())
-						.setSocketTimeout(getTimeout())
-						.setConnectionRequestTimeout(getTimeout());
+	public CloseableHttpClient getHttpClient(String url, String fingerprint, boolean acceptPermanently) throws IOException, GeneralSecurityException {
+		RequestConfig.Builder configBuilder = RequestConfig.custom().setConnectTimeout(getTimeout()).setSocketTimeout(getTimeout()).setConnectionRequestTimeout(getTimeout());
 
 		HttpClientBuilder builder = HttpClientBuilder.create();
 		if (fingerprint != null) {
-			builder.setSSLSocketFactory(
-					SSLConnectionSocketFactoryFactory.getFactory(
-							URI.create(url).getHost(), this, fingerprint, acceptPermanently));
+			builder.setSSLSocketFactory(SSLConnectionSocketFactoryFactory.getFactory(URI.create(url).getHost(), this, fingerprint, acceptPermanently));
 		} else {
-			builder.setSSLSocketFactory(
-					SSLConnectionSocketFactoryFactory.getFactory(URI.create(url).getHost(), this));
+			builder.setSSLSocketFactory(SSLConnectionSocketFactoryFactory.getFactory(URI.create(url).getHost(), this));
 		}
 
 		ConnectionParam connParam = Model.getSingleton().getOptionsParam().getConnectionParam();
@@ -153,11 +140,7 @@ public class SrmExtension extends ExtensionAdaptor {
 
 			if (connParam.isUseProxyChainAuth()) {
 				BasicCredentialsProvider credsProvider = new BasicCredentialsProvider();
-				credsProvider.setCredentials(
-						new AuthScope(proxyHost, proxyPort),
-						new UsernamePasswordCredentials(
-								connParam.getProxyChainUserName(),
-								connParam.getProxyChainPassword()));
+				credsProvider.setCredentials(new AuthScope(proxyHost, proxyPort), new UsernamePasswordCredentials(connParam.getProxyChainUserName(), connParam.getProxyChainPassword()));
 				builder.setDefaultCredentialsProvider(credsProvider);
 			}
 		}

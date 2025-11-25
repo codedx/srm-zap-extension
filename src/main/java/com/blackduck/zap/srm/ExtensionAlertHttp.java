@@ -89,17 +89,11 @@ public class ExtensionAlertHttp {
 		sb.append(getHTML(alert));
 		sb.append("  <uri>").append(ReportGenerator.entityEncode(uri)).append("</uri>\r\n");
 		sb.append("  <param>").append(ReportGenerator.entityEncode(param)).append("</param>\r\n");
-		sb.append("  <attack>")
-				.append(ReportGenerator.entityEncode(attack))
-				.append("</attack>\r\n");
+		sb.append("  <attack>").append(ReportGenerator.entityEncode(attack)).append("</attack>\r\n");
 		if (evidence != null && evidence.length() > 0) {
-			sb.append("  <evidence>")
-					.append(ReportGenerator.entityEncode(evidence))
-					.append("</evidence>\r\n");
+			sb.append("  <evidence>").append(ReportGenerator.entityEncode(evidence)).append("</evidence>\r\n");
 		}
-		sb.append("  <otherinfo>")
-				.append(ReportGenerator.entityEncode(otherInfo))
-				.append("</otherinfo>\r\n");
+		sb.append("  <otherinfo>").append(ReportGenerator.entityEncode(otherInfo)).append("</otherinfo>\r\n");
 		return sb.toString();
 	}
 }

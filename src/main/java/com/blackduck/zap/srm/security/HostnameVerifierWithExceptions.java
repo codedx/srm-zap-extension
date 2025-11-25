@@ -30,8 +30,7 @@ public class HostnameVerifierWithExceptions implements HostnameVerifier {
 	private final HostnameVerifier delegate;
 	private final Set<String> allowedExceptions;
 
-	public HostnameVerifierWithExceptions(
-			HostnameVerifier delegate, Set<String> allowedExceptions) {
+	public HostnameVerifierWithExceptions(HostnameVerifier delegate, Set<String> allowedExceptions) {
 		this.delegate = delegate;
 		this.allowedExceptions = allowedExceptions;
 	}

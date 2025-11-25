@@ -44,23 +44,19 @@ public class ReloadableX509TrustManager implements X509TrustManager {
 	private final InvalidCertificateStrategy invalidCertStrat;
 	private X509TrustManager tmDelegate;
 
-	public ReloadableX509TrustManager(
-			ExtraCertManager certManager, InvalidCertificateStrategy invalidCertStrat)
-			throws IOException, GeneralSecurityException {
+	public ReloadableX509TrustManager(ExtraCertManager certManager, InvalidCertificateStrategy invalidCertStrat) throws IOException, GeneralSecurityException {
 		this.certManager = certManager;
 		this.invalidCertStrat = invalidCertStrat;
 		reloadTrustManager();
 	}
 
 	@Override
-	public void checkClientTrusted(X509Certificate[] chain, String authType)
-			throws CertificateException {
+	public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
 		tmDelegate.checkClientTrusted(chain, authType);
 	}
 
 	@Override
-	public void checkServerTrusted(X509Certificate[] chain, String authType)
-			throws CertificateException {
+	public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
 		try {
 			tmDelegate.checkServerTrusted(chain, authType);
 		} catch (CertificateException cx) {
@@ -86,8 +82,7 @@ public class ReloadableX509TrustManager implements X509TrustManager {
 						reloadTrustManager();
 					} catch (IOException | GeneralSecurityException e) {
 						// wrap errors from the cert manipulation
-						throw new CertificateException(
-								"Error handling temporary acceptance of the certificate", e);
+						throw new CertificateException("Error handling temporary acceptance of the certificate", e);
 					}
 					// now retry the trust check
 					tmDelegate.checkServerTrusted(chain, authType);
@@ -99,8 +94,7 @@ public class ReloadableX509TrustManager implements X509TrustManager {
 						reloadTrustManager();
 					} catch (IOException | GeneralSecurityException e) {
 						// wrap errors from the cert manipulation
-						throw new CertificateException(
-								"Error handling permanent acceptance of the certificate", e);
+						throw new CertificateException("Error handling permanent acceptance of the certificate", e);
 					}
 					// now retry the trust check
 					tmDelegate.checkServerTrusted(chain, authType);
@@ -122,8 +116,7 @@ public class ReloadableX509TrustManager implements X509TrustManager {
 		KeyStore ks = certManager.asKeyStore();
 
 		// initialize a new TMF with the KeyStore we just created
-		TrustManagerFactory tmf =
-				TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+		TrustManagerFactory tmf = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
 		tmf.init(ks);
 
 		// acquire an X509 trust manager from the TMF

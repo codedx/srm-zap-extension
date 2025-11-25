@@ -44,15 +44,9 @@ public class UploadPropertiesDialog {
 
 	private static final Logger LOGGER = LogManager.getLogger(UploadPropertiesDialog.class);
 
-	private static final String[] DIALOG_BUTTONS = {
-			Constant.messages.getString("srm.settings.upload"),
-			Constant.messages.getString("srm.settings.cancel")
-	};
+	private static final String[] DIALOG_BUTTONS = {Constant.messages.getString("srm.settings.upload"), Constant.messages.getString("srm.settings.cancel")};
 
-	public static final ImageIcon REFRESH_ICON =
-			new ImageIcon(
-					UploadPropertiesDialog.class.getResource(
-							"/com/blackduck/zap/srm/resources/refresh.png"));
+	public static final ImageIcon REFRESH_ICON = new ImageIcon(UploadPropertiesDialog.class.getResource("/com/blackduck/zap/srm/resources/refresh.png"));
 
 	private JTextField serverUrl;
 	private JTextField apiKey;
@@ -71,70 +65,41 @@ public class UploadPropertiesDialog {
 	public void openProperties(final UploadActionListener uploader) {
 		JPanel message = new JPanel(new GridBagLayout());
 
-		serverUrl =
-				labelTextField(
-						Constant.messages.getString("srm.settings.serverurl") + " ",
-						message,
-						SrmProperties.getInstance().getServerUrl(),
-						30);
-		apiKey =
-				labelTextField(
-						Constant.messages.getString("srm.settings.apikey") + " ",
-						message,
-						SrmProperties.getInstance().getApiKey(),
-						30);
+		serverUrl = labelTextField(Constant.messages.getString("srm.settings.serverurl") + " ", message, SrmProperties.getInstance().getServerUrl(), 30);
+		apiKey = labelTextField(Constant.messages.getString("srm.settings.apikey") + " ", message, SrmProperties.getInstance().getApiKey(), 30);
 		projectBox = createProjectComboBox(message);
-		timeout =
-				labelTextField(
-						Constant.messages.getString("srm.setting.timeout") + " ",
-						message,
-						SrmProperties.getInstance().getTimeout(),
-						5);
+		timeout = labelTextField(Constant.messages.getString("srm.setting.timeout") + " ", message, SrmProperties.getInstance().getTimeout(), 5);
 
-		final JOptionPane pane =
-				new JOptionPane(
-						message,
-						JOptionPane.PLAIN_MESSAGE,
-						JOptionPane.OK_CANCEL_OPTION,
-						null,
-						DIALOG_BUTTONS,
-						null);
+		final JOptionPane pane = new JOptionPane(message, JOptionPane.PLAIN_MESSAGE, JOptionPane.OK_CANCEL_OPTION, null, DIALOG_BUTTONS, null);
 		dialog = pane.createDialog(Constant.messages.getString("srm.settings.title"));
 
-		Thread popupThread =
-				new Thread() {
-					@Override
-					public void run() {
-						dialog.setVisible(true);
-						if (DIALOG_BUTTONS[0].equals(pane.getValue())) {
-							String timeoutValue = timeout.getText();
-							if (!isStringNumber(timeoutValue)) {
-								timeoutValue = SrmProperties.DEFAULT_TIMEOUT_STRING;
-								error(Constant.messages.getString("srm.error.timeout"));
-							}
-							SrmProperties.getInstance()
-									.setProperties(
-											serverUrl.getText(),
-											apiKey.getText(),
-											getProject().getValue(),
-											timeoutValue);
-							uploader.generateAndUploadReport();
-						}
+		Thread popupThread = new Thread() {
+			@Override
+			public void run() {
+				dialog.setVisible(true);
+				if (DIALOG_BUTTONS[0].equals(pane.getValue())) {
+					String timeoutValue = timeout.getText();
+					if (!isStringNumber(timeoutValue)) {
+						timeoutValue = SrmProperties.DEFAULT_TIMEOUT_STRING;
+						error(Constant.messages.getString("srm.error.timeout"));
 					}
-				};
-		Thread updateThread =
-				new Thread() {
-					@Override
-					public void run() {
-						if (!"".equals(serverUrl.getText()) && !"".equals(apiKey.getText())) {
-							updateProjects(true);
-							String previousId = SrmProperties.getInstance().getSelectedId();
-							for (NameValuePair p : projectArr) {
-								if (previousId.equals(p.getValue())) projectBox.setSelectedItem(p);
-							}
-						}
+					SrmProperties.getInstance().setProperties(serverUrl.getText(), apiKey.getText(), getProject().getValue(), timeoutValue);
+					uploader.generateAndUploadReport();
+				}
+			}
+		};
+		Thread updateThread = new Thread() {
+			@Override
+			public void run() {
+				if (!"".equals(serverUrl.getText()) && !"".equals(apiKey.getText())) {
+					updateProjects(true);
+					String previousId = SrmProperties.getInstance().getSelectedId();
+					for (NameValuePair p : projectArr) {
+						if (previousId.equals(p.getValue())) projectBox.setSelectedItem(p);
 					}
-				};
+				}
+			}
+		};
 		popupThread.start();
 		updateThread.start();
 	}
@@ -172,18 +137,16 @@ public class UploadPropertiesDialog {
 		cont.add(box, gbc);
 
 		JButton refresh = new JButton(REFRESH_ICON);
-		refresh.setPreferredSize(
-				new Dimension(REFRESH_ICON.getIconHeight() + 6, REFRESH_ICON.getIconHeight() + 6));
-		refresh.addActionListener(
-				e -> {
-					if ("".equals(serverUrl.getText()) || "".equals(apiKey.getText())) {
-						error(Constant.messages.getString("srm.error.required"));
-						return;
-					}
-					dialog.setCursor(new Cursor(Cursor.WAIT_CURSOR));
-					updateProjects();
-					dialog.setCursor(Cursor.getDefaultCursor());
-				});
+		refresh.setPreferredSize(new Dimension(REFRESH_ICON.getIconHeight() + 6, REFRESH_ICON.getIconHeight() + 6));
+		refresh.addActionListener(e -> {
+			if ("".equals(serverUrl.getText()) || "".equals(apiKey.getText())) {
+				error(Constant.messages.getString("srm.error.required"));
+				return;
+			}
+			dialog.setCursor(new Cursor(Cursor.WAIT_CURSOR));
+			updateProjects();
+			dialog.setCursor(Cursor.getDefaultCursor());
+		});
 		gbc = new GridBagConstraints();
 		gbc.gridx = 2;
 		gbc.gridy = 2;
@@ -220,9 +183,7 @@ public class UploadPropertiesDialog {
 				HttpGet get = new HttpGet(getServerUrl() + "/api/projects");
 				get.setHeader("API-Key", getApiKey());
 				HttpResponse response = client.execute(get);
-				rd =
-					new BufferedReader(
-						new InputStreamReader(response.getEntity().getContent(), StandardCharsets.UTF_8));
+				rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), StandardCharsets.UTF_8));
 
 				StringBuilder result = new StringBuilder();
 				String line = "";
@@ -234,11 +195,7 @@ public class UploadPropertiesDialog {
 				if (code == 200) {
 					projectArr = parseProjectJson(result.toString(), initialRefresh);
 				} else if (!initialRefresh) {
-					String msg =
-							Constant.messages.getString("srm.refresh.non200")
-									+ ' '
-									+ response.getStatusLine()
-									+ '.';
+					String msg = Constant.messages.getString("srm.refresh.non200") + ' ' + response.getStatusLine() + '.';
 					if (code == 403) msg += Constant.messages.getString("srm.refresh.403");
 					else if (code == 404) msg += Constant.messages.getString("srm.refresh.404");
 					else if (code == 400) msg += Constant.messages.getString("srm.refresh.400");
@@ -247,29 +204,25 @@ public class UploadPropertiesDialog {
 			}
 		} catch (GeneralSecurityException | ParseException | IOException e) {
 			if (!initialRefresh) {
-				if (e instanceof MalformedURLException)
-					error(Constant.messages.getString("srm.error.client.invalid"));
+				if (e instanceof MalformedURLException) error(Constant.messages.getString("srm.error.client.invalid"));
 				else error(Constant.messages.getString("srm.refresh.failed"));
 			}
 			LOGGER.error("Error refreshing project list: ", e);
 		} finally {
-			if (client != null)
-				try {
-					client.close();
-				} catch (IOException e) {
-				}
-			if (rd != null)
-				try {
-					rd.close();
-				} catch (IOException e) {
-				}
+			if (client != null) try {
+				client.close();
+			} catch (IOException e) {
+			}
+			if (rd != null) try {
+				rd.close();
+			} catch (IOException e) {
+			}
 		}
 		updateProjectComboBox();
 		dialog.setCursor(Cursor.getDefaultCursor());
 	}
 
-	private ModifiedNameValuePair[] parseProjectJson(String json, boolean initialRefresh)
-			throws ParseException {
+	private ModifiedNameValuePair[] parseProjectJson(String json, boolean initialRefresh) throws ParseException {
 		JSONParser parser = new JSONParser();
 		JSONObject obj = (JSONObject) parser.parse(json);
 		JSONArray projects = (JSONArray) obj.get("projects");
@@ -285,8 +238,7 @@ public class UploadPropertiesDialog {
 			Arrays.sort(projectArr);
 			// set the project ids to visible if the names are the same
 			for (int i = 0; i < projectArr.length - 1; i++) {
-				if (projectArr[i].getName() != null
-						&& projectArr[i].getName().equals(projectArr[i + 1].getName())) {
+				if (projectArr[i].getName() != null && projectArr[i].getName().equals(projectArr[i + 1].getName())) {
 					projectArr[i].setUseId(true);
 					projectArr[i + 1].setUseId(true);
 				}
@@ -313,19 +265,11 @@ public class UploadPropertiesDialog {
 	}
 
 	private void warn(String message) {
-		JOptionPane.showMessageDialog(
-				dialog,
-				message,
-				Constant.messages.getString("srm.warning"),
-				JOptionPane.WARNING_MESSAGE);
+		JOptionPane.showMessageDialog(dialog, message, Constant.messages.getString("srm.warning"), JOptionPane.WARNING_MESSAGE);
 	}
 
 	private void error(String message) {
-		JOptionPane.showMessageDialog(
-				dialog,
-				message,
-				Constant.messages.getString("srm.error"),
-				JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(dialog, message, Constant.messages.getString("srm.error"), JOptionPane.ERROR_MESSAGE);
 	}
 
 	private String getServerUrl() {
@@ -338,8 +282,7 @@ public class UploadPropertiesDialog {
 		return apiKey.getText();
 	}
 
-	private static class ModifiedNameValuePair extends BasicNameValuePair
-			implements Comparable<ModifiedNameValuePair> {
+	private static class ModifiedNameValuePair extends BasicNameValuePair implements Comparable<ModifiedNameValuePair> {
 		private static final long serialVersionUID = -6671681121783779976L;
 		private boolean useId = false;
 

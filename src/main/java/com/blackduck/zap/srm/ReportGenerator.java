@@ -56,8 +56,7 @@ public class ReportGenerator {
 	// private static Pattern patternWindows = Pattern.compile("window", Pattern.CASE_INSENSITIVE);
 	// private static Pattern patternLinux = Pattern.compile("linux", Pattern.CASE_INSENSITIVE);
 
-	private static final SimpleDateFormat staticDateFormat =
-			new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss");
+	private static final SimpleDateFormat staticDateFormat = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss");
 
 	public static File XMLToHtml(Document xmlDocument, String infilexsl, File outFile) {
 		File stylesheet = null;
@@ -85,10 +84,7 @@ public class ReportGenerator {
 	}
 
 	public static File stringToHtml(String inxml, String infilexsl, String outfilename) {
-		return stringToHtml(
-				inxml,
-				infilexsl != null ? new StreamSource(new File(infilexsl)) : null,
-				outfilename);
+		return stringToHtml(inxml, infilexsl != null ? new StreamSource(new File(infilexsl)) : null, outfilename);
 	}
 
 	public static File stringToHtml(String inxml, StreamSource stylesource, String outfilename) {
@@ -104,8 +100,7 @@ public class ReportGenerator {
 			try {
 				outfile = new File(tempOutfilename);
 
-				DocumentBuilder builder =
-						XmlUtils.newXxeDisabledDocumentBuilderFactory().newDocumentBuilder();
+				DocumentBuilder builder = XmlUtils.newXxeDisabledDocumentBuilderFactory().newDocumentBuilder();
 				doc = builder.parse(new InputSource(inReader));
 
 				// Use a Transformer for output
@@ -117,10 +112,7 @@ public class ReportGenerator {
 				StreamResult result = new StreamResult(outfile.getPath());
 				transformer.transform(source, result);
 
-			} catch (TransformerException
-					 | SAXException
-					 | ParserConfigurationException
-					 | IOException e) {
+			} catch (TransformerException | SAXException | ParserConfigurationException | IOException e) {
 				LOGGER.error(e.getMessage(), e);
 				// Save the xml for diagnosing the problem
 				BufferedWriter bw = null;
@@ -146,12 +138,7 @@ public class ReportGenerator {
 			// we should really adopt something other than XSLT ;)
 			String line;
 
-			try (BufferedReader br =
-						 Files.newBufferedReader(
-								 new File(tempOutfilename).toPath(), StandardCharsets.UTF_8);
-				 BufferedWriter bw =
-						 Files.newBufferedWriter(
-								 new File(outfilename).toPath(), StandardCharsets.UTF_8)) {
+			try (BufferedReader br = Files.newBufferedReader(new File(tempOutfilename).toPath(), StandardCharsets.UTF_8); BufferedWriter bw = Files.newBufferedWriter(new File(outfilename).toPath(), StandardCharsets.UTF_8)) {
 
 				while ((line = br.readLine()) != null) {
 					bw.write(line.replace("&lt;p&gt;", "<p>").replace("&lt;/p&gt;", "</p>"));
@@ -219,8 +206,7 @@ public class ReportGenerator {
 
 		try {
 
-			DocumentBuilder builder =
-					XmlUtils.newXxeDisabledDocumentBuilderFactory().newDocumentBuilder();
+			DocumentBuilder builder = XmlUtils.newXxeDisabledDocumentBuilderFactory().newDocumentBuilder();
 			doc = builder.parse(new InputSource(inReader));
 
 			// Use a Transformer for output
@@ -232,10 +218,7 @@ public class ReportGenerator {
 			StreamResult result = new StreamResult(writer);
 			transformer.transform(source, result);
 
-		} catch (TransformerException
-				 | SAXException
-				 | ParserConfigurationException
-				 | IOException e) {
+		} catch (TransformerException | SAXException | ParserConfigurationException | IOException e) {
 			showDialogForGUI();
 			LOGGER.error(e.getMessage(), e);
 		}
@@ -260,8 +243,7 @@ public class ReportGenerator {
 			datafile = new File(infilexml);
 			outfile = new File(outfilename);
 
-			DocumentBuilder builder =
-					XmlUtils.newXxeDisabledDocumentBuilderFactory().newDocumentBuilder();
+			DocumentBuilder builder = XmlUtils.newXxeDisabledDocumentBuilderFactory().newDocumentBuilder();
 			doc = builder.parse(datafile);
 
 			// Use a Transformer for output
@@ -274,10 +256,7 @@ public class ReportGenerator {
 			StreamResult result = new StreamResult(outfile.getPath());
 			transformer.transform(source, result);
 
-		} catch (TransformerException
-				 | SAXException
-				 | ParserConfigurationException
-				 | IOException e) {
+		} catch (TransformerException | SAXException | ParserConfigurationException | IOException e) {
 			showDialogForGUI();
 			LOGGER.error(e.getMessage(), e);
 		}
@@ -328,8 +307,7 @@ public class ReportGenerator {
 		}
 	}
 
-	public static void addChildTextNode(
-			Document doc, Element parent, String nodeName, String text) {
+	public static void addChildTextNode(Document doc, Element parent, String nodeName, String text) {
 		Element child = doc.createElement(nodeName);
 		child.appendChild(doc.createTextNode(text));
 		parent.appendChild(child);
@@ -346,8 +324,7 @@ public class ReportGenerator {
 
 	private static void showDialogForGUI() {
 		if (View.isInitialised()) {
-			JOptionPane.showMessageDialog(
-					null, Constant.messages.getString("report.write.dialog.message"));
+			JOptionPane.showMessageDialog(null, Constant.messages.getString("report.write.dialog.message"));
 		}
 	}
 }

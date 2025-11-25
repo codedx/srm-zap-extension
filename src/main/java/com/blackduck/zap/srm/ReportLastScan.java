@@ -56,10 +56,7 @@ public class ReportLastScan {
 	private static final String JSON_FILE_EXTENSION = ".json";
 
 	public enum ReportType {
-		HTML,
-		XML,
-		MD,
-		JSON
+		HTML, XML, MD, JSON
 	}
 
 	public ReportLastScan() {
@@ -100,8 +97,7 @@ public class ReportLastScan {
 		return generateReportWithXsl(sb.toString(), fileName, xslFileName);
 	}
 
-	private static File generateReportWithXsl(String report, String reportFile, String xslFileName)
-			throws IOException {
+	private static File generateReportWithXsl(String report, String reportFile, String xslFileName) throws IOException {
 		Path xslFile = Paths.get(Constant.getZapInstall(), "xml", xslFileName);
 		if (Files.exists(xslFile)) {
 			return ReportGenerator.stringToHtml(report, xslFile.toString(), reportFile);
@@ -128,11 +124,7 @@ public class ReportLastScan {
 
 	public void generate(StringBuilder report) throws Exception {
 		report.append("<?xml version=\"1.0\"?>");
-		report.append("<OWASPZAPReport version=\"")
-				.append(Constant.PROGRAM_VERSION)
-				.append("\" generated=\"")
-				.append(ReportGenerator.getCurrentDateTimeString())
-				.append("\">\r\n");
+		report.append("<OWASPZAPReport version=\"").append(Constant.PROGRAM_VERSION).append("\" generated=\"").append(ReportGenerator.getCurrentDateTimeString()).append("\">\r\n");
 		siteXML(report);
 		report.append("</OWASPZAPReport>");
 	}
@@ -146,20 +138,7 @@ public class ReportLastScan {
 			String siteName = ScanPanel.cleanSiteName(site, true);
 			String[] hostAndPort = siteName.split(":");
 			boolean isSSL = (site.getNodeName().startsWith("https"));
-			String siteStart =
-					"<site name=\""
-							+ XMLStringUtil.escapeControlChrs(site.getNodeName())
-							+ "\""
-							+ " host=\""
-							+ XMLStringUtil.escapeControlChrs(hostAndPort[0])
-							+ "\""
-							+ " port=\""
-							+ XMLStringUtil.escapeControlChrs(hostAndPort[1])
-							+ "\""
-							+ " ssl=\""
-							+ isSSL
-							+ "\""
-							+ ">";
+			String siteStart = "<site name=\"" + XMLStringUtil.escapeControlChrs(site.getNodeName()) + "\"" + " host=\"" + XMLStringUtil.escapeControlChrs(hostAndPort[0]) + "\"" + " port=\"" + XMLStringUtil.escapeControlChrs(hostAndPort[1]) + "\"" + " ssl=\"" + isSSL + "\"" + ">";
 			StringBuilder extensionsXML = getExtensionsXML(site);
 			String siteEnd = "</site>";
 			report.append(siteStart);
@@ -210,46 +189,44 @@ public class ReportLastScan {
 		try {
 			JFileChooser chooser = new WritableFileChooser(Model.getSingleton().getOptionsParam().getUserDirectory());
 
-			chooser.setFileFilter(
-					new FileFilter() {
+			chooser.setFileFilter(new FileFilter() {
 
-						@Override
-						public boolean accept(File file) {
-							if (file.isDirectory()) {
-								return true;
-							} else if (file.isFile()) {
-								String lcFileName = file.getName().toLowerCase(Locale.ROOT);
-								switch (localReportType) {
-									case XML:
-										return lcFileName.endsWith(XML_FILE_EXTENSION);
-									case MD:
-										return lcFileName.endsWith(MD_FILE_EXTENSION);
-									case JSON:
-										return lcFileName.endsWith(JSON_FILE_EXTENSION);
-									case HTML:
-									default:
-										return (lcFileName.endsWith(HTM_FILE_EXTENSION)
-												|| lcFileName.endsWith(HTML_FILE_EXTENSION));
-								}
-							}
-							return false;
+				@Override
+				public boolean accept(File file) {
+					if (file.isDirectory()) {
+						return true;
+					} else if (file.isFile()) {
+						String lcFileName = file.getName().toLowerCase(Locale.ROOT);
+						switch (localReportType) {
+							case XML:
+								return lcFileName.endsWith(XML_FILE_EXTENSION);
+							case MD:
+								return lcFileName.endsWith(MD_FILE_EXTENSION);
+							case JSON:
+								return lcFileName.endsWith(JSON_FILE_EXTENSION);
+							case HTML:
+							default:
+								return (lcFileName.endsWith(HTM_FILE_EXTENSION) || lcFileName.endsWith(HTML_FILE_EXTENSION));
 						}
+					}
+					return false;
+				}
 
-						@Override
-						public String getDescription() {
-							switch (localReportType) {
-								case XML:
-									return Constant.messages.getString("file.format.xml");
-								case MD:
-									return Constant.messages.getString("file.format.md");
-								case JSON:
-									return Constant.messages.getString("file.format.json");
-								case HTML:
-								default:
-									return Constant.messages.getString("file.format.html");
-							}
-						}
-					});
+				@Override
+				public String getDescription() {
+					switch (localReportType) {
+						case XML:
+							return Constant.messages.getString("file.format.xml");
+						case MD:
+							return Constant.messages.getString("file.format.md");
+						case JSON:
+							return Constant.messages.getString("file.format.json");
+						case HTML:
+						default:
+							return Constant.messages.getString("file.format.html");
+					}
+				}
+			});
 
 			String fileExtension = "";
 			switch (localReportType) {
@@ -267,8 +244,7 @@ public class ReportLastScan {
 					fileExtension = HTML_FILE_EXTENSION;
 					break;
 			}
-			chooser.setSelectedFile(
-					new File(fileExtension)); // Default the filename to a reasonable extension;
+			chooser.setSelectedFile(new File(fileExtension)); // Default the filename to a reasonable extension;
 
 			int rc = chooser.showSaveDialog(View.getSingleton().getMainFrame());
 			File file = null;
@@ -277,9 +253,7 @@ public class ReportLastScan {
 
 				File report = generate(file.getAbsolutePath(), localReportType);
 				if (report == null) {
-					view.showMessageDialog(
-							Constant.messages.getString(
-									"report.unknown.error", file.getAbsolutePath()));
+					view.showMessageDialog(Constant.messages.getString("report.unknown.error", file.getAbsolutePath()));
 					return;
 				}
 
@@ -292,9 +266,7 @@ public class ReportLastScan {
 					DesktopUtils.openUrlInBrowser(report.toURI());
 				} catch (Exception e) {
 					LOGGER.error(e.getMessage(), e);
-					view.showMessageDialog(
-							Constant.messages.getString(
-									"report.complete.warning", report.getAbsolutePath()));
+					view.showMessageDialog(Constant.messages.getString("report.complete.warning", report.getAbsolutePath()));
 				}
 			}
 

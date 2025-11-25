@@ -35,8 +35,7 @@ import java.util.*;
 public class SSLConnectionSocketFactoryFactory {
 
 	private static final Map<String, SSLConnectionSocketFactory> dialogFactoriesByHost = new HashMap<>();
-	private static final Map<String, SSLConnectionSocketFactory> fingerprintFactoriesByHost =
-			new HashMap<>();
+	private static final Map<String, SSLConnectionSocketFactory> fingerprintFactoriesByHost = new HashMap<>();
 
 	/**
 	 * Returns a SSLConnectionSocketFactory for the given host. When a SSL connection is created
@@ -51,8 +50,7 @@ public class SSLConnectionSocketFactoryFactory {
 	 * @throws IOException
 	 * @throws GeneralSecurityException
 	 */
-	public static SSLConnectionSocketFactory getFactory(String host, SrmExtension extension)
-			throws IOException, GeneralSecurityException {
+	public static SSLConnectionSocketFactory getFactory(String host, SrmExtension extension) throws IOException, GeneralSecurityException {
 
 		SSLConnectionSocketFactory instance = dialogFactoriesByHost.get(host);
 		if (instance == null) {
@@ -78,9 +76,7 @@ public class SSLConnectionSocketFactoryFactory {
 	 * @throws IOException
 	 * @throws GeneralSecurityException
 	 */
-	public static SSLConnectionSocketFactory getFactory(
-			String host, SrmExtension extension, String fingerprint, boolean acceptPermanently)
-			throws IOException, GeneralSecurityException {
+	public static SSLConnectionSocketFactory getFactory(String host, SrmExtension extension, String fingerprint, boolean acceptPermanently) throws IOException, GeneralSecurityException {
 		SSLConnectionSocketFactory instance = fingerprintFactoriesByHost.get(host);
 		if (instance == null) {
 			initializeFactory(host, extension, fingerprint, acceptPermanently);
@@ -105,13 +101,7 @@ public class SSLConnectionSocketFactoryFactory {
 		if (OS.contains("WIN")) {
 			env = Paths.get(System.getenv("APPDATA"), "Software Risk Manager", "ZAP");
 		} else if (OS.contains("MAC")) {
-			env =
-					Paths.get(
-							System.getProperty("user.home"),
-							"Library",
-							"Application Support",
-							"Software Risk Manager",
-							"ZAP");
+			env = Paths.get(System.getProperty("user.home"), "Library", "Application Support", "Software Risk Manager", "ZAP");
 		} else if (OS.contains("NUX")) {
 			env = Paths.get(System.getProperty("user.home"), ".srm", "zap");
 		} else {
@@ -143,13 +133,10 @@ public class SSLConnectionSocketFactoryFactory {
 	 * @throws IOException
 	 * @throws GeneralSecurityException
 	 */
-	private static void initializeFactory(
-			String host, SrmExtension extension, String fingerprint, boolean acceptPermanently)
-			throws IOException, GeneralSecurityException {
+	private static void initializeFactory(String host, SrmExtension extension, String fingerprint, boolean acceptPermanently) throws IOException, GeneralSecurityException {
 		// set up the certificate management
 		File managedKeyStoreFile = getTrustStoreForHost(host);
-		ExtraCertManager certManager =
-				new SingleExtraCertManager(managedKeyStoreFile, "u9lwIfUpaN");
+		ExtraCertManager certManager = new SingleExtraCertManager(managedKeyStoreFile, "u9lwIfUpaN");
 
 		// get the default hostname verifier that gets used by the modified one
 		// and the invalid cert dialog
@@ -157,11 +144,9 @@ public class SSLConnectionSocketFactoryFactory {
 
 		InvalidCertificateStrategy invalidCertStrat;
 		if (fingerprint == null) {
-			invalidCertStrat =
-					new InvalidCertificateDialogStrategy(defaultHostnameVerifier, host, extension);
+			invalidCertStrat = new InvalidCertificateDialogStrategy(defaultHostnameVerifier, host, extension);
 		} else {
-			invalidCertStrat =
-					new InvalidCertificateFingerprintStrategy(fingerprint, acceptPermanently);
+			invalidCertStrat = new InvalidCertificateFingerprintStrategy(fingerprint, acceptPermanently);
 		}
 
 		/*
@@ -171,8 +156,7 @@ public class SSLConnectionSocketFactoryFactory {
 		 */
 		List<X509TrustManager> trustManagersForComposite = new LinkedList<>();
 		X509TrustManager systemTrustManager = getDefaultTrustManager();
-		ReloadableX509TrustManager customTrustManager =
-				new ReloadableX509TrustManager(certManager, invalidCertStrat);
+		ReloadableX509TrustManager customTrustManager = new ReloadableX509TrustManager(certManager, invalidCertStrat);
 		trustManagersForComposite.add(systemTrustManager);
 		trustManagersForComposite.add(customTrustManager);
 		X509TrustManager trustManager = new CompositeX509TrustManager(trustManagersForComposite);
@@ -184,11 +168,9 @@ public class SSLConnectionSocketFactoryFactory {
 		// factory
 		Set<String> allowedHosts = new HashSet<>();
 		allowedHosts.add(host);
-		HostnameVerifier modifiedHostnameVerifier =
-				new HostnameVerifierWithExceptions(defaultHostnameVerifier, allowedHosts);
+		HostnameVerifier modifiedHostnameVerifier = new HostnameVerifierWithExceptions(defaultHostnameVerifier, allowedHosts);
 
-		SSLConnectionSocketFactory factory =
-				new SSLConnectionSocketFactory(sslContext, modifiedHostnameVerifier);
+		SSLConnectionSocketFactory factory = new SSLConnectionSocketFactory(sslContext, modifiedHostnameVerifier);
 		// Register the `factory` and the `customTrustManager` under the given
 		// `host`
 		if (fingerprint == null) {
@@ -198,10 +180,8 @@ public class SSLConnectionSocketFactoryFactory {
 		}
 	}
 
-	private static X509TrustManager getDefaultTrustManager()
-			throws NoSuchAlgorithmException, KeyStoreException {
-		TrustManagerFactory defaultFactory =
-				TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+	private static X509TrustManager getDefaultTrustManager() throws NoSuchAlgorithmException, KeyStoreException {
+		TrustManagerFactory defaultFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
 		defaultFactory.init((KeyStore) null);
 
 		TrustManager[] managers = defaultFactory.getTrustManagers();

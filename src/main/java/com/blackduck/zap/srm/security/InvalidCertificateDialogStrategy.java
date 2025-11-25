@@ -45,24 +45,17 @@ public class InvalidCertificateDialogStrategy implements InvalidCertificateStrat
 	private final SrmExtension extension;
 
 	private static final String dialogTitle = Constant.messages.getString("srm.ssl.title");
-	private static final String[] dialogButtons = {
-			Constant.messages.getString("srm.ssl.reject"),
-			Constant.messages.getString("srm.ssl.accepttemp"),
-			Constant.messages.getString("srm.ssl.acceptperm")
-	};
+	private static final String[] dialogButtons = {Constant.messages.getString("srm.ssl.reject"), Constant.messages.getString("srm.ssl.accepttemp"), Constant.messages.getString("srm.ssl.acceptperm")};
 
-	public InvalidCertificateDialogStrategy(
-			HostnameVerifier defaultHostVerifier, String host, SrmExtension extension) {
+	public InvalidCertificateDialogStrategy(HostnameVerifier defaultHostVerifier, String host, SrmExtension extension) {
 		this.defaultHostVerifier = defaultHostVerifier;
 		this.host = host;
 		this.extension = extension;
 	}
 
 	@Override
-	public CertificateAcceptance checkAcceptance(
-			Certificate genericCert, CertificateException certError) {
-		if (genericCert instanceof X509Certificate cert
-				&& defaultHostVerifier instanceof DefaultHostnameVerifier verifier) {
+	public CertificateAcceptance checkAcceptance(Certificate genericCert, CertificateException certError) {
+		if (genericCert instanceof X509Certificate cert && defaultHostVerifier instanceof DefaultHostnameVerifier verifier) {
 
 			JPanel message = new JPanel(new GridBagLayout());
 			GridBagConstraints gbc = new GridBagConstraints();
@@ -86,8 +79,7 @@ public class InvalidCertificateDialogStrategy implements InvalidCertificateStrat
 			message.add(new JLabel(cert.getIssuerX500Principal().getName()), gbc);
 
 			try {
-				JLabel fingerprint =
-						new JLabel(Constant.messages.getString("srm.ssl.fingerprint") + " ");
+				JLabel fingerprint = new JLabel(Constant.messages.getString("srm.ssl.fingerprint") + " ");
 				fingerprint.setFont(bold);
 				gbc.gridx = 0;
 				gbc.gridy += 1;
@@ -112,9 +104,7 @@ public class InvalidCertificateDialogStrategy implements InvalidCertificateStrat
 
 				String msg;
 				if (cn != null) {
-					msg =
-							String.format(
-									Constant.messages.getString("srm.ssl.mismatchmsg"), host, cn);
+					msg = String.format(Constant.messages.getString("srm.ssl.mismatchmsg"), host, cn);
 				} else {
 					msg = e.getMessage();
 				}
@@ -124,16 +114,7 @@ public class InvalidCertificateDialogStrategy implements InvalidCertificateStrat
 			}
 
 			// Open the dialog, and return its result
-			int choice =
-					JOptionPane.showOptionDialog(
-							extension.getView().getMainFrame(),
-							message,
-							dialogTitle,
-							JOptionPane.YES_NO_CANCEL_OPTION,
-							JOptionPane.PLAIN_MESSAGE,
-							null,
-							dialogButtons,
-							null);
+			int choice = JOptionPane.showOptionDialog(extension.getView().getMainFrame(), message, dialogTitle, JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, dialogButtons, null);
 			switch (choice) {
 				case (0):
 					return CertificateAcceptance.REJECT;

@@ -72,32 +72,21 @@ public class UploadActionListener implements ActionListener {
 		try {
 			final File reportFile = generateReportFile(extension);
 			if (!reportIsEmpty(reportFile)) {
-				Thread uploadThread =
-						new Thread() {
-							@Override
-							public void run() {
-								String err;
-								try {
-									err =
-										uploadFile(
-												extension.getHttpClient(),
-												reportFile,
-												SrmProperties.getInstance().getServerUrl(),
-												SrmProperties.getInstance().getApiKey(),
-												prop.getProject().getValue());
-								} catch (IOException ex1) {
-									err = Constant.messages.getString("srm.error.unexpected");
-									LOGGER.error("Unexpected error while uploading report: ", ex1);
-								}
-								if (err != null) View.getSingleton().showMessageDialog(err);
-								else
-									View.getSingleton()
-											.showMessageDialog(
-													Constant.messages.getString(
-															"srm.message.success"));
-								reportFile.delete();
-							}
-						};
+				Thread uploadThread = new Thread() {
+					@Override
+					public void run() {
+						String err;
+						try {
+							err = uploadFile(extension.getHttpClient(), reportFile, SrmProperties.getInstance().getServerUrl(), SrmProperties.getInstance().getApiKey(), prop.getProject().getValue());
+						} catch (IOException ex1) {
+							err = Constant.messages.getString("srm.error.unexpected");
+							LOGGER.error("Unexpected error while uploading report: ", ex1);
+						}
+						if (err != null) View.getSingleton().showMessageDialog(err);
+						else View.getSingleton().showMessageDialog(Constant.messages.getString("srm.message.success"));
+						reportFile.delete();
+					}
+				};
 				uploadThread.start();
 			} else {
 				error = Constant.messages.getString("srm.error.empty");
@@ -109,13 +98,7 @@ public class UploadActionListener implements ActionListener {
 		if (error != null) View.getSingleton().showWarningDialog(error);
 	}
 
-	public static String uploadFile(
-			CloseableHttpClient client,
-			File reportFile,
-			String serverUrl,
-			String apiKey,
-			String project)
-			throws IOException {
+	public static String uploadFile(CloseableHttpClient client, File reportFile, String serverUrl, String apiKey, String project) throws IOException {
 		String err = null;
 		HttpResponse response = sendData(client, reportFile, serverUrl, apiKey, project);
 		StatusLine responseLine = null;
@@ -125,40 +108,21 @@ public class UploadActionListener implements ActionListener {
 			responseCode = responseLine.getStatusCode();
 		}
 		if (responseCode == 400) {
-			err =
-					Constant.messages.getString("srm.error.unexpected")
-							+ "\n"
-							+ Constant.messages.getString("srm.error.http.400");
+			err = Constant.messages.getString("srm.error.unexpected") + "\n" + Constant.messages.getString("srm.error.http.400");
 		} else if (responseCode == 403) {
-			err =
-					Constant.messages.getString("srm.error.unsent")
-							+ " "
-							+ Constant.messages.getString("srm.error.http.403");
+			err = Constant.messages.getString("srm.error.unsent") + " " + Constant.messages.getString("srm.error.http.403");
 		} else if (responseCode == 404) {
-			err =
-					Constant.messages.getString("srm.error.unsent")
-							+ " "
-							+ Constant.messages.getString("srm.error.http.404");
+			err = Constant.messages.getString("srm.error.unsent") + " " + Constant.messages.getString("srm.error.http.404");
 		} else if (responseCode == 415) {
-			err =
-					Constant.messages.getString("srm.error.unexpected")
-							+ "\n"
-							+ Constant.messages.getString("srm.error.http.415");
+			err = Constant.messages.getString("srm.error.unexpected") + "\n" + Constant.messages.getString("srm.error.http.415");
 		} else if (responseCode != 200 && responseCode != 202) {
 			err = Constant.messages.getString("srm.error.unexpected");
-			if (response != null)
-				err += Constant.messages.getString("srm.error.http.other") + " " + responseLine;
+			if (response != null) err += Constant.messages.getString("srm.error.http.other") + " " + responseLine;
 		}
 		return err;
 	}
 
-	private static HttpResponse sendData(
-			CloseableHttpClient client,
-			File reportFile,
-			String serverUrl,
-			String apiKey,
-			String project)
-			throws IOException {
+	private static HttpResponse sendData(CloseableHttpClient client, File reportFile, String serverUrl, String apiKey, String project) throws IOException {
 		if (client == null) return null;
 		try {
 			HttpPost post = new HttpPost(serverUrl + "/api/projects/" + project + "/analysis");
@@ -184,8 +148,7 @@ public class UploadActionListener implements ActionListener {
 		}
 	}
 
-	public static void generateReportString(SrmExtension extension, StringBuilder report)
-			throws Exception {
+	public static void generateReportString(SrmExtension extension, StringBuilder report) throws Exception {
 		ReportLastScanHttp saver = new ReportLastScanHttp();
 		saver.generate(report);
 	}
@@ -207,11 +170,7 @@ public class UploadActionListener implements ActionListener {
 
 			while (reader.hasNext()) {
 				XMLEvent event = reader.nextEvent();
-				if (event.isStartElement()
-						&& !event.asStartElement()
-						.getName()
-						.getLocalPart()
-						.equals("OWASPZAPReport")) {
+				if (event.isStartElement() && !event.asStartElement().getName().getLocalPart().equals("OWASPZAPReport")) {
 					return false;
 				}
 			}
