@@ -75,7 +75,6 @@ public class SrmExtension extends ExtensionAdaptor {
 	public void hook(ExtensionHook extensionHook) {
 		super.hook(extensionHook);
 		cdxAPIImpl = new SrmAPI(this);
-		cdxAPIImpl.initApiViewsAndActions();
 		API.getInstance().registerApiImplementor(cdxAPIImpl);
 		if (hasView()) {
 			extensionHook.getHookMenu().addReportMenuItem(getUploadMenu());
