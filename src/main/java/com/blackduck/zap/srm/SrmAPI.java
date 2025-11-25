@@ -31,7 +31,7 @@ import java.security.GeneralSecurityException;
 public class SrmAPI extends ApiImplementor {
 
 	private static final Logger LOGGER = LogManager.getLogger(SrmExtension.class);
-	private static final String PREFIX = "codedx";
+	private static final String PREFIX = "srm";
 
 	private static final String VIEW_GENERATE = "generateReport";
 	private static final String ACTION_UPLOAD = "uploadReport";
