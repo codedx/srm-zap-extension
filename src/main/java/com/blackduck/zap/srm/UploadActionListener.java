@@ -3,8 +3,6 @@
  *
  * ZAP is an HTTP/HTTPS proxy for assessing web application security.
  *
- * Copyright 2025 The ZAP Development Team
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -81,12 +79,12 @@ public class UploadActionListener implements ActionListener {
 								String err;
 								try {
 									err =
-											uploadFile(
-													extension.getHttpClient(),
-													reportFile,
-													SrmProperties.getInstance().getServerUrl(),
-													SrmProperties.getInstance().getApiKey(),
-													prop.getProject().getValue());
+										uploadFile(
+												extension.getHttpClient(),
+												reportFile,
+												SrmProperties.getInstance().getServerUrl(),
+												SrmProperties.getInstance().getApiKey(),
+												prop.getProject().getValue());
 								} catch (IOException ex1) {
 									err = Constant.messages.getString("srm.error.unexpected");
 									LOGGER.error("Unexpected error while uploading report: ", ex1);

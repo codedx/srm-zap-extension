@@ -3,8 +3,6 @@
  *
  * ZAP is an HTTP/HTTPS proxy for assessing web application security.
  *
- * Copyright 2025 The ZAP Development Team
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -223,8 +221,8 @@ public class UploadPropertiesDialog {
 				get.setHeader("API-Key", getApiKey());
 				HttpResponse response = client.execute(get);
 				rd =
-						new BufferedReader(
-								new InputStreamReader(response.getEntity().getContent(), StandardCharsets.UTF_8));
+					new BufferedReader(
+						new InputStreamReader(response.getEntity().getContent(), StandardCharsets.UTF_8));
 
 				StringBuilder result = new StringBuilder();
 				String line = "";

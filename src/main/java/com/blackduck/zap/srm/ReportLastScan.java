@@ -3,8 +3,6 @@
  *
  * ZAP is an HTTP/HTTPS proxy for assessing web application security.
  *
- * Copyright 2003-2004 The ZAP Development Team
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -210,9 +208,7 @@ public class ReportLastScan {
 		}
 
 		try {
-			JFileChooser chooser =
-					new WritableFileChooser(
-							Model.getSingleton().getOptionsParam().getUserDirectory());
+			JFileChooser chooser = new WritableFileChooser(Model.getSingleton().getOptionsParam().getUserDirectory());
 
 			chooser.setFileFilter(
 					new FileFilter() {

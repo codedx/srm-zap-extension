@@ -3,7 +3,6 @@
  *
  * ZAP is an HTTP/HTTPS proxy for assessing web application security.
  *
- * Copyright 2003-2004 The ZAP Development Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -127,10 +126,7 @@ public class ReportGenerator {
 				BufferedWriter bw = null;
 				showDialogForGUI();
 				try {
-					bw =
-							Files.newBufferedWriter(
-									new File(outfilename + "-orig.xml").toPath(),
-									StandardCharsets.UTF_8);
+					bw = Files.newBufferedWriter(new File(outfilename + "-orig.xml").toPath(), StandardCharsets.UTF_8);
 					bw.write(inxml);
 				} catch (IOException e2) {
 					LOGGER.error("Failed to write debug XML file", e);
@@ -173,9 +169,7 @@ public class ReportGenerator {
 			BufferedWriter bw = null;
 
 			try {
-				bw =
-						Files.newBufferedWriter(
-								new File(outfilename).toPath(), StandardCharsets.UTF_8);
+				bw = Files.newBufferedWriter(new File(outfilename).toPath(), StandardCharsets.UTF_8);
 				bw.write(inxml);
 			} catch (IOException e2) {
 				showDialogForGUI();
