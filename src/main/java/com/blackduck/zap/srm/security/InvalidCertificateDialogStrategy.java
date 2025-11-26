@@ -123,8 +123,10 @@ public class InvalidCertificateDialogStrategy implements InvalidCertificateStrat
 					message,
 					dialogTitle,
 					JOptionPane.YES_NO_CANCEL_OPTION,
-					JOptionPane.PLAIN_MESSAGE, null,
-					dialogButtons, null
+					JOptionPane.PLAIN_MESSAGE,
+					null,
+					dialogButtons,
+					null
 			);
 			switch (choice) {
 				case (0):
