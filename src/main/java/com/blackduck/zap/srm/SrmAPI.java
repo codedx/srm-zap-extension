@@ -55,8 +55,27 @@ public class SrmAPI extends ApiImplementor {
 
 		String[] optionalParams = new String[]{ACTION_PARAM_FINGERPRINT, ACTION_PARAM_ACCEPT_PERM};
 
-		this.addApiAction(new ApiAction(ACTION_UPLOAD, new String[]{ACTION_PARAM_FILE_PATH, ACTION_PARAM_SERVER_URL, ACTION_PARAM_API_KEY, ACTION_PARAM_PROJECT}, optionalParams));
-		this.addApiAction(new ApiAction(ACTION_GEN_UPLOAD, new String[]{ACTION_PARAM_SERVER_URL, ACTION_PARAM_API_KEY, ACTION_PARAM_PROJECT}, optionalParams));
+		this.addApiAction(
+				new ApiAction(
+						ACTION_UPLOAD,
+						new String[]{
+								ACTION_PARAM_FILE_PATH,
+								ACTION_PARAM_SERVER_URL,
+								ACTION_PARAM_API_KEY,
+								ACTION_PARAM_PROJECT
+						},
+						optionalParams
+				));
+		this.addApiAction(
+				new ApiAction(
+						ACTION_GEN_UPLOAD,
+						new String[]{
+								ACTION_PARAM_SERVER_URL,
+								ACTION_PARAM_API_KEY,
+								ACTION_PARAM_PROJECT
+						},
+						optionalParams
+				));
 	}
 
 	@Override

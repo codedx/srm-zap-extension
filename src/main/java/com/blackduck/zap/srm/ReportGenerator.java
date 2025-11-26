@@ -138,13 +138,14 @@ public class ReportGenerator {
 			// we should really adopt something other than XSLT ;)
 			String line;
 
-			try (BufferedReader br = Files.newBufferedReader(new File(tempOutfilename).toPath(), StandardCharsets.UTF_8); BufferedWriter bw = Files.newBufferedWriter(new File(outfilename).toPath(), StandardCharsets.UTF_8)) {
-
+			try (
+					BufferedReader br = Files.newBufferedReader(new File(tempOutfilename).toPath(), StandardCharsets.UTF_8);
+					BufferedWriter bw = Files.newBufferedWriter(new File(outfilename).toPath(), StandardCharsets.UTF_8)
+			) {
 				while ((line = br.readLine()) != null) {
 					bw.write(line.replace("&lt;p&gt;", "<p>").replace("&lt;/p&gt;", "</p>"));
 					bw.newLine();
 				}
-
 			} catch (IOException e) {
 				showDialogForGUI();
 				LOGGER.error(e.getMessage(), e);

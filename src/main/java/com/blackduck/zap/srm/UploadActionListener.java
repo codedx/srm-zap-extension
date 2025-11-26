@@ -77,7 +77,13 @@ public class UploadActionListener implements ActionListener {
 					public void run() {
 						String err;
 						try {
-							err = uploadFile(extension.getHttpClient(), reportFile, SrmProperties.getInstance().getServerUrl(), SrmProperties.getInstance().getApiKey(), prop.getProject().getValue());
+							err = uploadFile(
+									extension.getHttpClient(),
+									reportFile,
+									SrmProperties.getInstance().getServerUrl(),
+									SrmProperties.getInstance().getApiKey(),
+									prop.getProject().getValue()
+							);
 						} catch (IOException ex1) {
 							err = Constant.messages.getString("srm.error.unexpected");
 							LOGGER.error("Unexpected error while uploading report: ", ex1);

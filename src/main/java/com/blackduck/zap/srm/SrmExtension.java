@@ -122,7 +122,10 @@ public class SrmExtension extends ExtensionAdaptor {
 
 	@SuppressWarnings("deprecation")
 	public CloseableHttpClient getHttpClient(String url, String fingerprint, boolean acceptPermanently) throws IOException, GeneralSecurityException {
-		RequestConfig.Builder configBuilder = RequestConfig.custom().setConnectTimeout(getTimeout()).setSocketTimeout(getTimeout()).setConnectionRequestTimeout(getTimeout());
+		RequestConfig.Builder configBuilder = RequestConfig.custom()
+				.setConnectTimeout(getTimeout())
+				.setSocketTimeout(getTimeout())
+				.setConnectionRequestTimeout(getTimeout());
 
 		HttpClientBuilder builder = HttpClientBuilder.create();
 		if (fingerprint != null) {
@@ -140,7 +143,10 @@ public class SrmExtension extends ExtensionAdaptor {
 
 			if (connParam.isUseProxyChainAuth()) {
 				BasicCredentialsProvider credsProvider = new BasicCredentialsProvider();
-				credsProvider.setCredentials(new AuthScope(proxyHost, proxyPort), new UsernamePasswordCredentials(connParam.getProxyChainUserName(), connParam.getProxyChainPassword()));
+				credsProvider.setCredentials(
+						new AuthScope(proxyHost, proxyPort),
+						new UsernamePasswordCredentials(connParam.getProxyChainUserName(), connParam.getProxyChainPassword())
+				);
 				builder.setDefaultCredentialsProvider(credsProvider);
 			}
 		}

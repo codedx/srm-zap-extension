@@ -44,7 +44,10 @@ public class UploadPropertiesDialog {
 
 	private static final Logger LOGGER = LogManager.getLogger(UploadPropertiesDialog.class);
 
-	private static final String[] DIALOG_BUTTONS = {Constant.messages.getString("srm.settings.upload"), Constant.messages.getString("srm.settings.cancel")};
+	private static final String[] DIALOG_BUTTONS = {
+			Constant.messages.getString("srm.settings.upload"),
+			Constant.messages.getString("srm.settings.cancel")
+	};
 
 	public static final ImageIcon REFRESH_ICON = new ImageIcon(UploadPropertiesDialog.class.getResource("/com/blackduck/zap/srm/resources/refresh.png"));
 
@@ -209,14 +212,10 @@ public class UploadPropertiesDialog {
 			}
 			LOGGER.error("Error refreshing project list: ", e);
 		} finally {
-			if (client != null) try {
-				client.close();
-			} catch (IOException e) {
-			}
-			if (rd != null) try {
-				rd.close();
-			} catch (IOException e) {
-			}
+			if (client != null)
+				try { client.close(); } catch (IOException e) {}
+			if (rd != null)
+				try { rd.close(); } catch (IOException e) {}
 		}
 		updateProjectComboBox();
 		dialog.setCursor(Cursor.getDefaultCursor());

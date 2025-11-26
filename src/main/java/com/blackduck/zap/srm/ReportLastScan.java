@@ -124,7 +124,11 @@ public class ReportLastScan {
 
 	public void generate(StringBuilder report) throws Exception {
 		report.append("<?xml version=\"1.0\"?>");
-		report.append("<OWASPZAPReport version=\"").append(Constant.PROGRAM_VERSION).append("\" generated=\"").append(ReportGenerator.getCurrentDateTimeString()).append("\">\r\n");
+		report.append("<OWASPZAPReport version=\"")
+				.append(Constant.PROGRAM_VERSION)
+				.append("\" generated=\"")
+				.append(ReportGenerator.getCurrentDateTimeString())
+				.append("\">\r\n");
 		siteXML(report);
 		report.append("</OWASPZAPReport>");
 	}
@@ -138,7 +142,11 @@ public class ReportLastScan {
 			String siteName = ScanPanel.cleanSiteName(site, true);
 			String[] hostAndPort = siteName.split(":");
 			boolean isSSL = (site.getNodeName().startsWith("https"));
-			String siteStart = "<site name=\"" + XMLStringUtil.escapeControlChrs(site.getNodeName()) + "\"" + " host=\"" + XMLStringUtil.escapeControlChrs(hostAndPort[0]) + "\"" + " port=\"" + XMLStringUtil.escapeControlChrs(hostAndPort[1]) + "\"" + " ssl=\"" + isSSL + "\"" + ">";
+			String siteStart = "<site name=\"" +
+					XMLStringUtil.escapeControlChrs(site.getNodeName()) +
+					"\"" + " host=\"" + XMLStringUtil.escapeControlChrs(hostAndPort[0]) +
+					"\"" + " port=\"" + XMLStringUtil.escapeControlChrs(hostAndPort[1]) +
+					"\"" + " ssl=\"" + isSSL + "\"" + ">";
 			StringBuilder extensionsXML = getExtensionsXML(site);
 			String siteEnd = "</site>";
 			report.append(siteStart);
